@@ -1,0 +1,26 @@
+
+services:
+    db-feh:
+        container_name: db-feh
+        image: postgres:17.4-bookworm
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: userPasswort
+            POSTGRES_DB: feh
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+
+    feh:
+        container_name: feh
+        image: feh:latest
+        depends_on:
+            - db-feh
+        ports:
+            - 8080:8080
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:postgresql://db-feh:5432/feh
+
+volumes:
+    postgres_data:
