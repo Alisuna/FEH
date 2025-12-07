@@ -1,45 +1,57 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse, HttpHandlerFn, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { delay, materialize, dematerialize } from 'rxjs/operators';
+import { delay, materialize, dematerialize, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { inject } from '@angular/core';
 
 import { Hero } from '../models/hero';
 import { HeroType } from '../models/heroType';
 
-const heroes: Hero[] = [
-    {
-      id: 1,
-      type: HeroType.RED,
-      level: 1,
-      name: 'Celica',
-      hp: 40,
-      atk: 36,
-      spd: 42,
-      def: 26,
-      res: 42
-    },
-    {
-      id: 1,
-      type: HeroType.RED,
-      level: 1,
-      name: 'Ike',
-      hp: 40,
-      atk: 36,
-      spd: 42,
-      def: 26,
-      res: 42
-    }
-  ];
+let heroes: Hero[] = [
+  {
+    id: 1,
+    type: HeroType.RED,
+    level: 1,
+    name: 'Celica',
+    hp: 40,
+    atk: 36,
+    spd: 42,
+    def: 26,
+    res: 42
+  },
+  {
+    id: 1,
+    type: HeroType.RED,
+    level: 1,
+    name: 'Ike',
+    hp: 40,
+    atk: 36,
+    spd: 42,
+    def: 26,
+    res: 42
+  },
+  {
+    id: 1,
+    type: HeroType.RED,
+    level: 1,
+    name: 'Elincia',
+    hp: 40,
+    atk: 36,
+    spd: 42,
+    def: 26,
+    res: 42
+  }
+];
 
 export function fakeBackendInterceptor(req: HttpRequest<any>, next: HttpHandlerFn): Observable<any> {
-  const { url, method, headers, body } = req;
 
-  console.log('FAKE BACKEND INTERCEPTOR ACTIVE', url, method);
-  console.log('REQUEST URL: ', url);
+  const http = inject(HttpClient);
+  const { url, method, headers, body } = req;
 
   return handleRoute();
 
-  function handleRoute() {
+  function handleRoute(): Observable<any> {
     switch (true) {
       case url.endsWith('/api/heroes') && method === 'GET':
         return getHeroes();
@@ -50,18 +62,18 @@ export function fakeBackendInterceptor(req: HttpRequest<any>, next: HttpHandlerF
     }
   }
 
-  function getHeroes() {
+  function getHeroes(): Observable<HttpResponse<Hero[]>> {
     return ok(heroes);
   }
 
-  function getHeroById() {
+  function getHeroById(): Observable<HttpResponse<Hero>> {
     const id = idFromUrl();
     const hero = heroes.find(h => h.id === id);
     return ok(hero);
   }
 
   // helper functions
-  function ok(body: any) {
+  function ok(body: any): Observable<HttpResponse<any>> {
     return of(new HttpResponse({ status: 200, body}))
   }
 
