@@ -1,0 +1,7 @@
+<mat-card>
+  <mat-card>
+    <mat-action-list>
+      @for (hero of heroes; track hero.id) { <button mat-list-item>{{hero.name}}</button> }
+    </mat-action-list>
+  </mat-card>
+</mat-card>
