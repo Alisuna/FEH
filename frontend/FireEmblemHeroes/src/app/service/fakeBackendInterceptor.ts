@@ -21,26 +21,26 @@ let heroes: Hero[] = [
     res: 42
   },
   {
-    id: 1,
+    id: 2,
     type: HeroType.RED,
     level: 1,
     name: 'Ike',
     hp: 40,
     atk: 36,
-    spd: 42,
-    def: 26,
-    res: 42
+    spd: 34,
+    def: 40,
+    res: 34
   },
   {
-    id: 1,
+    id: 3,
     type: HeroType.RED,
     level: 1,
     name: 'Elincia',
     hp: 40,
-    atk: 36,
-    spd: 42,
+    atk: 40,
+    spd: 40,
     def: 26,
-    res: 42
+    res: 28
   }
 ];
 
@@ -55,8 +55,10 @@ export function fakeBackendInterceptor(req: HttpRequest<any>, next: HttpHandlerF
     switch (true) {
       case url.endsWith('/api/heroes') && method === 'GET':
         return getHeroes();
-      case /\/api\/heroes\/\d+$/.test(url) && method ==='GET':
+      case /\/api\/heroes\/\d+$/.test(url) && method === 'GET':
         return getHeroById();
+      case /\/api\/heroes\/\d+$/.test(url) && method === 'PUT':
+        return updateHero(body);
       default:
         return next(req);
     }
@@ -69,6 +71,14 @@ export function fakeBackendInterceptor(req: HttpRequest<any>, next: HttpHandlerF
   function getHeroById(): Observable<HttpResponse<Hero>> {
     const id = idFromUrl();
     const hero = heroes.find(h => h.id === id);
+    return ok(hero);
+  }
+
+  function updateHero(hero: Hero): Observable<HttpResponse<Hero>> {
+    const index = heroes.findIndex((h: Hero) => h.id === hero.id);
+    if (index !== -1) {
+      heroes[index] = hero;
+    }
     return ok(hero);
   }
 

@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class=""></div>
+    <mat-card-title>{{hero?.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>Level: {{hero?.level}}</p>
+    <p>Hitpoints: {{hero?.hp}}</p>
+    <p>Attack: {{hero?.atk}}</p>
+    <p>Speed: {{hero?.spd}}</p>
+    <p>Defence: {{hero?.def}}</p>
+    <p>Resistenz: {{hero?.res}}</p>
+    <button type="button" (click)="toggle()">Update</button>
+  </mat-card-content>
+</mat-card>

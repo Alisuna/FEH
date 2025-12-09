@@ -1,7 +1,21 @@
 <mat-card>
   <mat-card>
     <mat-action-list>
-      @for (hero of heroes; track hero.id) { <button mat-list-item>{{hero.name}}</button> }
+      @for (hero of heroes; track hero.id) {
+        <button mat-list-item (click)="heroSelected(hero)">{{hero.name}}</button>
+        <mat-divider></mat-divider>
+      }
     </mat-action-list>
+  </mat-card>
+  <mat-card>
+    @if (isAdmin()) {
+      @if (selectedHero()) {
+        <hero-edit [hero]="selectedHero()" (updatedHero)="updateHero($event)"></hero-edit>
+      }
+    } @else {
+      @if (selectedHero()) {
+        <hero-detail [hero]="selectedHero()" (toggleAdmin)="handleToggleAdmin()"></hero-detail>
+      }
+    }
   </mat-card>
 </mat-card>

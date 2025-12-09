@@ -15,4 +15,9 @@ export class HeroService {
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.baseUrl);
   }
+
+  updateHero(hero: Hero): Observable<Hero> {
+    const url = `${this.baseUrl}/${hero.id}`;
+    return this.http.put<Hero>(url, hero);
+  }
 }
