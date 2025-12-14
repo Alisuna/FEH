@@ -20,4 +20,8 @@ export class HeroService {
     const url = `${this.baseUrl}/${hero.id}`;
     return this.http.put<Hero>(url, hero);
   }
+
+  createHero(hero: Hero): Observable<Hero> {
+    return this.http.post<Hero>(this.baseUrl, hero);
+  }
 }

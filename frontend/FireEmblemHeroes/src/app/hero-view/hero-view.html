@@ -2,8 +2,10 @@
   <mat-card>
     <mat-action-list>
       @for (hero of heroes; track hero.id) {
-        <button mat-list-item (click)="heroSelected(hero)">{{hero.name}}</button>
-        <mat-divider></mat-divider>
+        <button mat-list-item [disabled]="disabled()" (click)="heroSelected(hero)">{{hero.name}}</button>
+        @if (!$last) {
+          <mat-divider></mat-divider>
+        }
       }
     </mat-action-list>
   </mat-card>

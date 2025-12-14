@@ -1,10 +1,10 @@
 import { HeroType } from "./heroType";
 
 export interface Hero{
-  id: number;
+  id?: number;
   type: HeroType;
   level: number;
-  name: String;
+  name: string;
   hp: number;
   atk: number;
   spd: number;

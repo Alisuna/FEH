@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
 
 import { Hero } from '../../models/hero';
 import { HeroType } from '../../models/heroType';
@@ -8,7 +9,8 @@ import { HeroType } from '../../models/heroType';
 @Component({
   selector: 'hero-detail',
   imports: [
-    MatCardModule
+    MatCardModule,
+    MatButtonModule
   ],
   templateUrl: './hero-detail.html',
   styleUrl: './hero-detail.scss',

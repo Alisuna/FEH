@@ -1,4 +1,4 @@
-import { Component, OnChanges, SimpleChanges, Input, Output, EventEmitter} from '@angular/core';
+import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 
 import {MatCardModule} from '@angular/material/card';
@@ -8,11 +8,15 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
 
-import { Hero } from '../../models/hero';
-import { HeroType } from '../../models/heroType';
+import { Hero } from '../models/hero';
+import { HeroType } from '../models/heroType';
+import { HeroService } from '../service/hero-service';
+
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'hero-edit',
+  selector: 'create-hero',
+  standalone: true,
   imports: [
     MatCardModule,
     MatFormFieldModule,
@@ -22,13 +26,11 @@ import { HeroType } from '../../models/heroType';
     MatOptionModule,
     ReactiveFormsModule
   ],
-  templateUrl: './hero-edit.html',
-  styleUrl: './hero-edit.scss',
+  providers: [HeroService],
+  templateUrl: './create-hero.html',
+  styleUrl: './create-hero.scss',
 })
-export class HeroEdit {
-
-  @Input() hero: Hero | null = null;
-  @Output() updatedHero = new EventEmitter<Hero>();
+export class CreateHero {
 
   HeroType = HeroType;
 
@@ -45,37 +47,26 @@ export class HeroEdit {
     res: [0, [Validators.required, Validators.min(1), Validators.max(100)]],
   });
 
-  ngOnChanges(changes: SimpleChanges) {
-  if (changes['hero'] && this.hero) {
-    this.form.patchValue({
-      type: this.hero.type,
-      level: this.hero.level,
-      name: this.hero.name,
-      hp: this.hero.hp,
-      atk: this.hero.atk,
-      spd: this.hero.spd,
-      def: this.hero.def,
-      res: this.hero.res
-    });
-  }
-}
-
   onSubmit(): void {
-    if (this.hero) {
-      this.submitted = true;
-      const updated: Hero = {
-        id: this.hero.id,
-        type: this.form.value.type as HeroType,
-        level: Number(this.form.value.level),
-        name: this.form.value.name!,
-        hp: Number(this.form.value.hp),
-        atk: Number(this.form.value.atk),
-        spd: Number(this.form.value.spd),
-        def: Number(this.form.value.def),
-        res: Number(this.form.value.res)
-      };
-      this.updatedHero.emit(updated);
-    }
+    this.submitted = true;
+    const newHero: Hero = {
+      type: this.form.value.type as HeroType,
+      level: Number(this.form.value.level),
+      name: this.form.value.name!,
+      hp: Number(this.form.value.hp),
+      atk: Number(this.form.value.atk),
+      spd: Number(this.form.value.spd),
+      def: Number(this.form.value.def),
+      res: Number(this.form.value.res)
+    };
+    this.heroService.createHero(newHero).subscribe({
+      next: (hero) => {
+        console.log('Hero created', hero);
+        this.form.reset();
+        this.router.navigate(['/heroes']);
+      },
+      error: (err) => console.error('Failed to create hero', err)
+    });
   }
 
   get type() {
@@ -109,4 +100,6 @@ export class HeroEdit {
   get res() {
     return this.form.get('res');
   }
+
+  constructor(private heroService: HeroService, private router: Router) {}
 }

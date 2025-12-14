@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <div mat-card-avatar class=""></div>
-    <mat-card-title>{{hero?.name}}</mat-card-title>
+    <mat-card-title>Create a new Hero</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -18,7 +18,7 @@
       <p>
         <mat-form-field appearance="outline" subscriptSizing="fixed">
           <mat-label>Level</mat-label>
-          <input matInput formControlName="level" placeholder="{{hero?.level}}" type="number">
+          <input matInput formControlName="level" placeholder="" type="number">
           @if (level?.hasError('required') && (level?.invalid && (level?.dirty || level?.touched))) {
             <mat-error>Level is required</mat-error>
           }
@@ -30,7 +30,7 @@
       <p>
         <mat-form-field appearance="outline">
           <mat-label>Name</mat-label>
-          <input matInput formControlName="name" placeholder="{{hero?.name}}">
+          <input matInput formControlName="name" placeholder="">
           @if (name?.hasError('required') && (name?.invalid && (name?.dirty || name?.touched))) {
             <mat-error>Name is required</mat-error>
           }
@@ -42,7 +42,7 @@
       <p>
         <mat-form-field appearance="outline">
           <mat-label>Hitpoints</mat-label>
-          <input matInput formControlName="hp" placeholder="{{hero?.hp}}" type="number">
+          <input matInput formControlName="hp" placeholder="" type="number">
           @if (hp?.hasError('required') && (hp?.invalid && (hp?.dirty || hp?.touched))) {
             <mat-error>Hitpoints are required</mat-error>
           }
@@ -54,7 +54,7 @@
       <p>
         <mat-form-field appearance="outline">
           <mat-label>Attack</mat-label>
-          <input matInput formControlName="atk" placeholder="{{hero?.atk}}" type="number">
+          <input matInput formControlName="atk" placeholder="" type="number">
           @if (atk?.hasError('required') && (atk?.invalid && (atk?.dirty || atk?.touched))) {
             <mat-error>Attack is required</mat-error>
           }
@@ -66,7 +66,7 @@
       <p>
         <mat-form-field appearance="outline">
           <mat-label>Speed</mat-label>
-          <input matInput formControlName="spd" placeholder="{{hero?.spd}}" type="number">
+          <input matInput formControlName="spd" placeholder="" type="number">
           @if (spd?.hasError('required') && (spd?.invalid && (spd?.dirty || spd?.touched))) {
             <mat-error>Speed is required</mat-error>
           }
@@ -78,7 +78,7 @@
       <p>
         <mat-form-field appearance="outline">
           <mat-label>Defence</mat-label>
-          <input matInput formControlName="def" placeholder="{{hero?.def}}" type="number">
+          <input matInput formControlName="def" placeholder="" type="number">
           @if (def?.hasError('required') && (def?.invalid && (def?.dirty || def?.touched))) {
             <mat-error>Defence is required</mat-error>
           }
@@ -90,7 +90,7 @@
       <p>
         <mat-form-field appearance="outline">
           <mat-label>Resistance</mat-label>
-          <input matInput formControlName="res" placeholder="{{hero?.res}}" type="number">
+          <input matInput formControlName="res" placeholder="" type="number">
           @if (res?.hasError('required') && (res?.invalid && (res?.dirty || res?.touched))) {
             <mat-error>Resistance is required</mat-error>
           }

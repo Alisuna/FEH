@@ -1,12 +1,15 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { HeroView } from './hero-view/hero-view';
+import { RouterOutlet, RouterLink } from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDividerModule} from '@angular/material/divider';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    HeroView
+    RouterLink,
+    MatButtonModule,
+    MatDividerModule
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'

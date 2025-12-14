@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { fakeBackendInterceptor } from './service/fakeBackendInterceptor';
 
@@ -11,6 +11,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([fakeBackendInterceptor])
     ),
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
+    provideRouter(routes, withHashLocation())
   ]
 };

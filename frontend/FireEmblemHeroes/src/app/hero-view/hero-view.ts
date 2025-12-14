@@ -12,6 +12,7 @@ import { HeroEdit } from './hero-edit/hero-edit';
 
 @Component({
   selector: 'hero-view',
+  standalone: true,
   imports: [
     MatCardModule,
     MatListModule,
@@ -26,6 +27,7 @@ import { HeroEdit } from './hero-edit/hero-edit';
 export class HeroView {
 
   isAdmin = signal(false);
+  disabled = signal(false);
   selectedHero = signal<Hero | null>(null);
   heroes: Hero[] = [];
 
@@ -48,9 +50,8 @@ export class HeroView {
   updateHero(updatedHero: Hero): void {
     this.heroService.updateHero(updatedHero).subscribe({
       next: (hero) => {
-        // Update erfolgreich, jetzt Array refreshen
         this.refresh();
-        // Optional: selectedHero auf den neuen Hero setzen
+        console.log('Hero updated', hero);
         this.selectedHero.set(hero);
         this.isAdmin.set(false)
       },
@@ -58,9 +59,15 @@ export class HeroView {
         console.error('Update fehlgeschlagen', err);
       }
     });
+    this.toggleHeroButtons();
   }
 
   handleToggleAdmin(): void {
-    this.isAdmin.update(v => !v)
+    this.isAdmin.update(v => !v);
+    this.toggleHeroButtons();
+  }
+
+  toggleHeroButtons(): void {
+    this.disabled.update(v => !v);
   }
 }

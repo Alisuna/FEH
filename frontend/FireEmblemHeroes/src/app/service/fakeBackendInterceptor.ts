@@ -59,6 +59,8 @@ export function fakeBackendInterceptor(req: HttpRequest<any>, next: HttpHandlerF
         return getHeroById();
       case /\/api\/heroes\/\d+$/.test(url) && method === 'PUT':
         return updateHero(body);
+      case url.endsWith('/api/heroes') && method === 'POST':
+        return createHero(body);
       default:
         return next(req);
     }
@@ -79,6 +81,11 @@ export function fakeBackendInterceptor(req: HttpRequest<any>, next: HttpHandlerF
     if (index !== -1) {
       heroes[index] = hero;
     }
+    return ok(hero);
+  }
+
+  function createHero(hero: Hero): Observable<HttpResponse<Hero>> {
+    heroes.push(hero);
     return ok(hero);
   }
 
