@@ -7,10 +7,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-import { LoginRequest } from '../models/login-request';
+import { Request } from '../models/request';
 
 import { IntegrationService } from '../service/integration-service';
 import { Router } from '@angular/router';
+import { LocalStorageService } from '../service/local-storage-service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,7 @@ import { Router } from '@angular/router';
 })
 export class Login {
 
-  request: LoginRequest = {};
+  request: Request = {};
 
   fb = new FormBuilder();
   form = this.fb.group({
@@ -41,11 +42,15 @@ export class Login {
 
     this.integration.login(this.request).subscribe({
       next: (response) => {
-        console.log('Logged in: ', response);
+        console.log('Logged in: ', response.token);
         this.form.reset();
+        this.storage.set('auth-key', response.token);
         this.router.navigate(['/heroes']);
       },
-      error: (err) => console.error('Failed to log in', err)
+      error: (err) => {
+        console.error('Failed to log in', err);
+        this.storage.remove('auth-key');
+      }
     });
   }
 
@@ -61,5 +66,5 @@ export class Login {
     return this.form.get('password');
   }
 
-  constructor(private integration: IntegrationService, private router: Router) {}
+  constructor(private integration: IntegrationService, private router: Router, private storage : LocalStorageService) {}
 }

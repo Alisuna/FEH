@@ -1,9 +1,12 @@
 import { Routes } from '@angular/router';
 import { HeroView } from './hero-view/hero-view';
 import { CreateHero } from './create-hero/create-hero';
+import { AuthGuard } from './guards/auth-guard';
+import { Login } from './login/login';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'heroes', pathMatch: 'full' },
   { path: 'heroes', component: HeroView },
-  { path: 'createHero', component: CreateHero }
+  { path: 'createHero', component: CreateHero, canActivate: [AuthGuard] },
+  { path: 'login', component: Login}
 ];
