@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 
 import { MatCardModule } from '@angular/material/card';
@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 import { Request } from '../models/request';
 
@@ -21,14 +22,17 @@ import { LocalStorageService } from '../service/local-storage-service';
     MatButtonModule,
     MatSelectModule,
     MatInputModule,
+    MatIconModule,
     ReactiveFormsModule
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Login {
 
   request: Request = {};
+  hide = signal(true);
 
   fb = new FormBuilder();
   form = this.fb.group({
@@ -54,8 +58,13 @@ export class Login {
     });
   }
 
-  register() {
-    //this.router.navigate(['/register']);
+  clickEvent(event: MouseEvent): void {
+    this.hide.update(v => !v);
+    event.stopPropagation();
+  }
+
+  register(): void {
+    this.router.navigate(['/register']);
   }
 
   get username() {

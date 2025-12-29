@@ -13,5 +13,9 @@ export class IntegrationService {
     return this.http.post<Response>('http://localhost:8080/api/login', request);
   }
 
+  register(request: Request): Observable<Response> {
+    return this.http.post<Response>('http://localhost:8080/api/register', request);
+  }
+
   constructor(private http: HttpClient) {}
 }

@@ -1,21 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalStorageService {
 
-  constructor() { }
+  isLoggedInSignal = signal<boolean>(false);
 
-  set(key: any, value: any) {
+  constructor() {}
+
+  set(key: any, value: any): void {
     localStorage.setItem(key, value);
+    this.isLoggedInSignal.set(true);
   }
 
   get(key: string) {
     return localStorage.getItem(key);
   }
 
-  remove(key: string) {
+  remove(key: string): void {
     localStorage.removeItem(key);
+    this.isLoggedInSignal.set(false);
   }
+
+  isLoggedIn(): boolean {
+    return this.isLoggedInSignal();
+  }
+
 }
