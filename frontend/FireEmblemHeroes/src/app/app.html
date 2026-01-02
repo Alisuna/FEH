@@ -1,6 +1,8 @@
 <nav>
   <a matButton routerLink='/heroes'>Heroes</a>
-  <a matButton routerLink='/createHero'>Create Hero</a>
+  @if (isAdmin) {
+    <a matButton routerLink='/createHero'>Create Hero</a>
+  }
   @if (isLoggedIn) {
     <button matButton type="button" (click)="logout()">Logout</button>
   } @else {

@@ -26,7 +26,7 @@ import { HeroEdit } from './hero-edit/hero-edit';
 })
 export class HeroView {
 
-  isAdmin = signal(false);
+  updated = signal(false);
   disabled = signal(false);
   selectedHero = signal<Hero | null>(null);
   heroes: Hero[] = [];
@@ -52,8 +52,6 @@ export class HeroView {
       next: (hero) => {
         this.refresh();
         console.log('Hero updated', hero);
-        this.selectedHero.set(hero);
-        this.isAdmin.set(false)
       },
       error: (err) => {
         console.error('Update fehlgeschlagen', err);
@@ -62,12 +60,11 @@ export class HeroView {
     this.toggleHeroButtons();
   }
 
-  handleToggleAdmin(): void {
-    this.isAdmin.update(v => !v);
-    this.toggleHeroButtons();
-  }
-
   toggleHeroButtons(): void {
     this.disabled.update(v => !v);
+    this.updated.update(v => !v);
+    console.log(this.updated());
+
   }
+
 }

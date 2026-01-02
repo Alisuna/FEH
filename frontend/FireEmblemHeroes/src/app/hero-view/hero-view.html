@@ -10,13 +10,13 @@
     </mat-action-list>
   </mat-card>
   <mat-card>
-    @if (isAdmin()) {
+    @if (updated()) {
       @if (selectedHero()) {
         <hero-edit [hero]="selectedHero()" (updatedHero)="updateHero($event)"></hero-edit>
       }
     } @else {
       @if (selectedHero()) {
-        <hero-detail [hero]="selectedHero()" (toggleAdmin)="handleToggleAdmin()"></hero-detail>
+        <hero-detail [hero]="selectedHero()" (toggleHeroButtons)="toggleHeroButtons()"></hero-detail>
       }
     }
   </mat-card>

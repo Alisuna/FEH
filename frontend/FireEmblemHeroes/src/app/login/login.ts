@@ -46,9 +46,13 @@ export class Login {
 
     this.integration.login(this.request).subscribe({
       next: (response) => {
-        console.log('Logged in: ', response.token);
+        console.log('Logged in: ', response);
         this.form.reset();
-        this.storage.set('auth-key', response.token);
+        if (response.token) {
+          this.storage.set(response.token, this.getRoleFromToken(response.token));
+        } else {
+          console.error('Login response does not contain a token!');
+        }
         this.router.navigate(['/heroes']);
       },
       error: (err) => {
@@ -73,6 +77,12 @@ export class Login {
 
   get password() {
     return this.form.get('password');
+  }
+
+  private getRoleFromToken(token: any): string {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role;
+
   }
 
   constructor(private integration: IntegrationService, private router: Router, private storage : LocalStorageService) {}

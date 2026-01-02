@@ -29,5 +29,9 @@ export class App {
     return this.storage.isLoggedIn();
   }
 
+  get isAdmin(): boolean {
+    return this.storage.isAdmin();
+  }
+
   constructor(private router: Router, private storage: LocalStorageService) {}
 }

@@ -11,19 +11,26 @@ export class AuthGuard implements CanActivate {
 
   }
 
-  canActivate(): boolean {
-    return this.checkAuth();
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    return this.checkAuth(route);
   }
 
-  private checkAuth(): boolean {
+  private checkAuth(route: ActivatedRouteSnapshot): boolean {
     console.log("Guard Auth Key::"+ this.authService.get('auth-key'));
 
-    if (this.authService.get('auth-key')) {
-      return true;
-    } else {
+    if(!this.authService.isLoggedInSignal()) {
       this.router.navigate(['/login']);
       return false;
     }
+
+    const requiredRole = route.data?.['role'];
+
+    if(requiredRole === "ADMIN" && !this.authService.isAdmin()) {
+      this.router.navigate(['/unauthorized']);
+      return false;
+    }
+
+    return true;
   }
 
 };

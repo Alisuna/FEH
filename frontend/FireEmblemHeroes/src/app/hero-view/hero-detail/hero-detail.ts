@@ -1,10 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 
 import { Hero } from '../../models/hero';
 import { HeroType } from '../../models/heroType';
+import { LocalStorageService } from '../../service/local-storage-service';
 
 @Component({
   selector: 'hero-detail',
@@ -18,10 +20,15 @@ import { HeroType } from '../../models/heroType';
 export class HeroDetail {
 
   @Input() hero: Hero | null = null;
-  @Output() toggleAdmin = new EventEmitter<void>();
+  @Output() toggleHeroButtons = new EventEmitter<void>();
 
   toggle(): void {
-    this.toggleAdmin.emit();
+    this.toggleHeroButtons.emit();
   }
 
+  get isAdmin(): boolean {
+    return this.storage.isAdmin();
+  }
+
+  constructor(private storage: LocalStorageService, private router: Router) {}
 }
