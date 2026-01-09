@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 
 import { Router } from '@angular/router';
+import { AuthService } from './service/auth-service';
 import { LocalStorageService } from './service/local-storage-service';
 
 @Component({
@@ -21,11 +22,11 @@ export class App {
   protected readonly title = signal('FireEmblemHeroes');
 
   logout(): void {
-    this.storage.remove('auth-key');
+    this.authService.removeToken();
     this.router.navigate(['/login']);
   }
 
-  get isLoggedIn(): boolean {
+  get isAuthenticated(): boolean {
     return this.storage.isLoggedIn();
   }
 
@@ -33,5 +34,5 @@ export class App {
     return this.storage.isAdmin();
   }
 
-  constructor(private router: Router, private storage: LocalStorageService) {}
+  constructor(private router: Router, private authService: AuthService, private storage: LocalStorageService) {}
 }

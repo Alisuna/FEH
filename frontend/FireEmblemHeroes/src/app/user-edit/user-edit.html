@@ -1,0 +1,10 @@
+<mat-card>
+  <mat-list role="list">
+    @for (user of users; track user.id) {
+      <mat-list-item role="listItem">{{user.username}}</mat-list-item>
+      @if (!$last) {
+        <mat-divider></mat-divider>
+      }
+    }
+  </mat-list>
+</mat-card>

@@ -1,8 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 
-import {MatCardModule} from '@angular/material/card';
-import {MatListModule} from '@angular/material/list';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { Hero } from '../models/hero';
 import { HeroType } from '../models/heroType';
@@ -24,7 +24,7 @@ import { HeroEdit } from './hero-edit/hero-edit';
   templateUrl: './hero-view.html',
   styleUrl: './hero-view.scss',
 })
-export class HeroView {
+export class HeroView implements OnInit {
 
   updated = signal(false);
   disabled = signal(false);

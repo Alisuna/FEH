@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateFn, GuardResult, MaybeAsync, Router, RouterStateSnapshot } from '@angular/router';
+import { AuthService } from '../service/auth-service';
 import { LocalStorageService } from '../service/local-storage-service';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { LocalStorageService } from '../service/local-storage-service';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: LocalStorageService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private storage: LocalStorageService) {
 
   }
 
@@ -16,17 +17,17 @@ export class AuthGuard implements CanActivate {
   }
 
   private checkAuth(route: ActivatedRouteSnapshot): boolean {
-    console.log("Guard Auth Key::"+ this.authService.get('auth-key'));
+    console.log("Guard Auth Key:"+ this.authService.getToken());
 
-    if(!this.authService.isLoggedInSignal()) {
+    if(!this.authService.getToken()) {
       this.router.navigate(['/login']);
       return false;
     }
 
     const requiredRole = route.data?.['role'];
 
-    if(requiredRole === "ADMIN" && !this.authService.isAdmin()) {
-      this.router.navigate(['/unauthorized']);
+    if(requiredRole === "ADMIN" && !this.storage.isAdmin()) {
+      this.router.navigate(['/login']);
       return false;
     }
 

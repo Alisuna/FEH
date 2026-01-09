@@ -5,7 +5,7 @@ import { Injectable, signal } from '@angular/core';
 })
 export class LocalStorageService {
 
-  isLoggedInSignal = signal<boolean>(false);
+  isLoggedInSignal = signal<boolean>(!!localStorage.getItem('auth-key'));
   role = signal<string | null>(localStorage.getItem('role'));
 
   constructor() {}
@@ -35,5 +35,9 @@ export class LocalStorageService {
   isLoggedIn(): boolean {
     return this.isLoggedInSignal();
   }
+
+  hasToken(): boolean {
+  return !!this.get('auth-key');
+}
 
 }

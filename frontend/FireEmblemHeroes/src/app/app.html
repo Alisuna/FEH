@@ -3,7 +3,10 @@
   @if (isAdmin) {
     <a matButton routerLink='/createHero'>Create Hero</a>
   }
-  @if (isLoggedIn) {
+  @if (isAdmin) {
+    <a matButton routerLink='/userEdit'>Edit Users</a>
+  }
+  @if (isAuthenticated) {
     <button matButton type="button" (click)="logout()">Logout</button>
   } @else {
     <a matButton routerLink='/login'>Login</a>

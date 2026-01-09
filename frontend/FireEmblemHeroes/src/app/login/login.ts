@@ -13,6 +13,7 @@ import { Request } from '../models/request';
 import { IntegrationService } from '../service/integration-service';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../service/local-storage-service';
+import { AuthService } from '../service/auth-service';
 
 @Component({
   selector: 'app-login',
@@ -49,7 +50,7 @@ export class Login {
         console.log('Logged in: ', response);
         this.form.reset();
         if (response.token) {
-          this.storage.set(response.token, this.getRoleFromToken(response.token));
+          this.authService.setToken(response.token);
         } else {
           console.error('Login response does not contain a token!');
         }
@@ -57,7 +58,7 @@ export class Login {
       },
       error: (err) => {
         console.error('Failed to log in', err);
-        this.storage.remove('auth-key');
+        this.authService.removeToken();
       }
     });
   }
@@ -79,11 +80,5 @@ export class Login {
     return this.form.get('password');
   }
 
-  private getRoleFromToken(token: any): string {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.role;
-
-  }
-
-  constructor(private integration: IntegrationService, private router: Router, private storage : LocalStorageService) {}
+  constructor(private integration: IntegrationService, private router: Router, private authService : AuthService) {}
 }
