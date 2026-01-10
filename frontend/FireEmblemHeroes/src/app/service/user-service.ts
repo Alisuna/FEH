@@ -18,4 +18,17 @@ export class UserService {
     return this.http.get<UserResponse>(this.baseUrl);
   }
 
+  toggleAdminStatus(user: User): Observable<User> {
+    return this.http.post<User>(
+     `${this.baseUrl}/changeRole`,
+     user
+    );
+  }
+
+  deleteUser(user: User): Observable<User> {
+    return this.http.delete<User>(
+      `${this.baseUrl}/delete/${user.id}`
+    )
+  }
+
 }

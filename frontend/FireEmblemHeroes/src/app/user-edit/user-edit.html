@@ -1,7 +1,28 @@
 <mat-card>
   <mat-list role="list">
     @for (user of users; track user.id) {
-      <mat-list-item role="listItem">{{user.username}}</mat-list-item>
+      <mat-list-item role="listItem">
+        @if (isAdmin(user)) {
+          <mat-icon>admin_panel_settings</mat-icon>
+        } @else {
+          <mat-icon>person</mat-icon>
+        }
+        {{user.username}}
+        @if (username() !== user.username) {
+          @if (isAdmin(user)) {
+            <button matButton="filled" type="button" name="button" (click)="toggleAdminStatus(user)">
+              <mat-icon>remove_moderator</mat-icon>
+            </button>
+          } @else {
+            <button matButton="filled" type="button" name="button" (click)="toggleAdminStatus(user)">
+              <mat-icon>add_moderator</mat-icon>
+            </button>
+          }
+          <button matButton="filled" type="button" name="button" (click)="deleteUser(user)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
+      </mat-list-item>
       @if (!$last) {
         <mat-divider></mat-divider>
       }

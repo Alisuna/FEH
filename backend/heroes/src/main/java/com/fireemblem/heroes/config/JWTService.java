@@ -9,6 +9,8 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.fireemblem.heroes.models.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -46,9 +48,11 @@ public class JWTService {
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 
-	public String generateToken(String userName) {
+	public String generateToken(User user) {
 		Map<String, Object> claims = new HashMap<>();
-		return createToken(claims, userName);
+	    claims.put("role", user.getRole());
+		
+		return createToken(claims, user.getUsername());
 	}
 
 	private String createToken(Map<String, Object> claims, String userName) {

@@ -9,6 +9,7 @@ import lombok.Value;
 @Value
 @Builder
 public class HeroRepresentation {
+	
 	int id;
 	HeroType type;
 	int level;

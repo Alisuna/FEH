@@ -11,7 +11,13 @@ import com.fireemblem.heroes.config.JWTService;
 import com.fireemblem.heroes.models.User;
 
 import jakarta.transaction.Transactional;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,11 +38,13 @@ public class UserService {
 	
 	@Transactional
     public String login(User user) {
+		User loggedInUser = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new EntityNotFoundException());
+		
         Authentication authentication = authenticationManager
             .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(user.getUsername());
+            return jwtService.generateToken(loggedInUser);
         } else {
             throw new RuntimeException("Invalid credentials");
         }
@@ -62,6 +70,35 @@ public class UserService {
 		userRepository.save(newUser);
 		
 		return "User created with id " + newUser.getId();
+	}
+	
+	@Transactional
+	public List<User> getAll() {
+		return userRepository.findAll();
+	}
+	
+	@Transactional
+	public User changeRole(User user) {
+		User existingUser = userRepository.findById(user.getId()).orElseThrow(() -> new EntityNotFoundException());
+		if(user.getRole().equals("ADMIN") && userRepository.findByRole("ADMIN").size() <= 1) {
+			throw new RuntimeException("There has to be always one Admin active");
+		}
+		if(user.getRole().equals("ADMIN")) {
+			existingUser.setRole("USER");
+		} else {
+			existingUser.setRole("ADMIN");
+		}
+		return existingUser;
+	}
+	
+	@Transactional
+	public User delete(int id) {
+		User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+		if(user.getRole().equals("ADMIN") && userRepository.findByRole("ADMIN").size() <= 1) {
+			throw new RuntimeException("There has to be always one Admin active");
+		}
+		userRepository.delete(user);
+		return user;
 	}
 
 }

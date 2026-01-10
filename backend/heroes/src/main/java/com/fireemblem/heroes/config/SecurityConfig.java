@@ -6,6 +6,7 @@ import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -37,9 +38,15 @@ public class SecurityConfig {
     
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.cors(Customizer.withDefaults()).csrf(c -> c.disable())
-				.authorizeHttpRequests(req -> req.requestMatchers("/api/login", "/api/register").permitAll()
-						.requestMatchers("/api/dashboard").hasAnyAuthority("USER").anyRequest().authenticated())
+		return http
+		        .cors(Customizer.withDefaults())
+		        .csrf(c -> c.disable())
+		        .authorizeHttpRequests(req -> req
+		            .requestMatchers("/api/login", "/api/register").permitAll()
+		            .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasAuthority("ADMIN")
+		            .requestMatchers("/api/dashboard").hasAnyAuthority("USER")
+		            .anyRequest().authenticated()
+		        )
 				.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
